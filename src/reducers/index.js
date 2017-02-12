@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux'
 import {
   REQUEST_MATCHS, RECEIVE_MATCHS, LOGIN, MATCH_CREATED, CREATE_MATCH, MATCH_NOT_CREATED,
-  APOLOGY_RECEIVED, PLAY_MATCH_SUCCESS, PLAY_MATCH, ACCEPT_APOLOGY
+  PLAY_MATCH_SUCCESS, PLAY_MATCH, ACCEPT_APOLOGY, APOLOGY_RECEIVED, MATCH_RECEIVED, PLAYER_RECEIVED
 } from '../actions'
 
 const match = (state, action) => {
   switch (action.type) {
+    case PLAYER_RECEIVED:
     case PLAY_MATCH_SUCCESS:
       if (action.matchId.localeCompare(state.matchId) === 0){
         return Object.assign({},state,{players:[...state.players,action.player]})
@@ -15,23 +16,6 @@ const match = (state, action) => {
       return state
   }
 }
-
-/*
-const apologies = (state = ["1","2"], action) => {
-  switch (action.type) {
-    case APOLOGY_RECEIVED:
-      console.log(action.msg.matchId)
-      return {
-        ...state,
-        items: state.items.push({matchId: action.msg.matchId})
-      }
-    default:
-      return state
-
-  }
-}
-*/
-
 
 const matchs = (state = {
   isFetching: false,
@@ -47,6 +31,7 @@ const matchs = (state = {
         ...state,
         requestForPlay: true
       }
+    case PLAYER_RECEIVED:
     case PLAY_MATCH_SUCCESS:
       return {
         ...state,
@@ -66,6 +51,13 @@ const matchs = (state = {
             return m
           })
     }
+    case MATCH_RECEIVED:
+      let matchReceived = Object.assign({},{matchId: action.matchId,players: [], creator: action.creator, date: action.date, place: action.place, notification:{apology: false, read: false}})
+      console.log(matchReceived)
+      return {
+        ...state,
+        items: [...state.items, matchReceived]
+      }
     case ACCEPT_APOLOGY:
       return {
         ...state,
@@ -77,12 +69,12 @@ const matchs = (state = {
         })
       }
     case MATCH_CREATED:
-      let newMatch = Object.assign({},action.match,{notification:{apology: false, read: false}})
-      console.log(newMatch)
+      let matchCreated = Object.assign({},action.match,{notification:{apology: false, read: false}})
+      console.log(matchCreated)
       return {
         ...state,
         creatingMatch: false,
-        items: [...state.items, newMatch]
+        items: [...state.items, matchCreated]
       }
       case MATCH_NOT_CREATED:
         return {

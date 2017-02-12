@@ -7,12 +7,23 @@ export const MATCH_NOT_CREATED = 'MATCH_NOT_CREATED'
 export const PLAY_MATCH = 'PLAY_MATCH'
 export const PLAY_MATCH_SUCCESS = 'PLAY_MATCH_SUCCESS'
 export const PLAY_MATCH_FAILURE = 'PLAY_MATCH_FAILURE'
-export const APOLOGY_RECEIVED = 'APOLOGY_RECEIVED'
 export const OPEN_WS = 'OPEN_WS'
 export const ACCEPT_APOLOGY = 'ACCEPT_APOLOGY'
 
+// Notifications
+export const MATCH_RECEIVED = 'MATCH_RECEIVED'
+export const PLAYER_RECEIVED = 'PLAYER_RECEIVED'
+export const APOLOGY_RECEIVED = 'APOLOGY_RECEIVED'
 
+export const matchReceived = (msg) => ({
+  type: MATCH_RECEIVED,
+  msg
+})
 
+export const playerReceived = (msg) => ({
+  type: PLAYER_RECEIVED,
+  msg
+})
 
 export const apologyReceived = (msg) => ({
   type: APOLOGY_RECEIVED,

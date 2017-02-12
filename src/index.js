@@ -6,16 +6,30 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import reducer from './reducers'
 import App from './containers/App'
-import { apologyReceived, LOGIN, ACCEPT_APOLOGY } from './actions'
+import { apologyReceived,matchReceived,playerReceived, LOGIN, ACCEPT_APOLOGY } from './actions'
 
 
 const wsMiddleware = ws => store => next => action => {
   switch (action.type) {
     case LOGIN:
       let player = action.player
-      ws = new WebSocket("ws://"+window.location.host+"/apologiesWS?name=" + player)
+      ws = new WebSocket("ws://"+window.location.host+"/notificationsWS?name=" + player)
       ws.onmessage = (event) => {
-        store.dispatch(apologyReceived(JSON.parse(event.data)))
+        let data = JSON.parse(event.data)
+        console.log(data)
+        switch (data.type){
+          case "match":
+            store.dispatch(matchReceived(data))
+            break
+          case "apology":
+            store.dispatch(apologyReceived(data))
+            break
+          case "player":
+            store.dispatch(playerReceived(data))
+          default:
+            break
+        }
+
       }
       return next(action)
     case ACCEPT_APOLOGY:

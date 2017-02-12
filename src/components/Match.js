@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { playMatchRequest, acceptApology } from '../actions'
+import { MATCH_SIZE } from '../constants/matchs'
 
 // TODO la logica de que no se pinte el Play si ya esta en el partido deberia estar en los reducers? Lo que pasa es que no se si los reducers pueden contener logica para rechazar los comandos/actions
 
@@ -14,7 +15,7 @@ let Match = ({ creator, players, date, place, onPlayClick,onDismissClick, login,
        )}
     </ul>
     {notification.apology && <div>You have been kicked out. Sorry! <button onClick={onDismissClick}>Dismiss</button></div> }
-    {requestForPlay ? 'Playing...' : (!players.find(x => x === login) && <button type="button" onClick={onPlayClick} > Play! </button>)}
+    {requestForPlay ? 'Playing...' : (players.length < MATCH_SIZE) && (login !== creator) && (!players.find(x => x === login) && <button type="button" onClick={onPlayClick} > Play! </button>)}
 
 
   </span>

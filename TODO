@@ -1,0 +1,4 @@
+- Algo de CSS
+- No actualiza la lista de participantes cuando hubo modificaciones concurrentes (Necesita WS)
+- Cuando actualizo la pagina vuelve al Login. Investigar React Router.
+ 
